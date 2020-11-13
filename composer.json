@@ -1,0 +1,15 @@
+{
+    "name": "search/strings",
+    "authors": [
+        {
+            "name": "Stanislav Evglevsky",
+            "email": "evglevsckij.stanislav@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Main\\": "src/modules/main"
+        }
+    }
+}
