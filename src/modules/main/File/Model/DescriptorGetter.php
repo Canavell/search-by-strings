@@ -22,12 +22,12 @@ class DescriptorGetter
     public function getDescriptor()
     {
         if (filter_var($this->pathToFile, FILTER_VALIDATE_URL)) {
-            $pathinfo = pathinfo($this->pathToFile);
-            $newPath = realpath(__DIR__ . '/../../../../../data/') . $pathinfo['name'] . "." . $pathinfo['ext'];
+            $newPath = realpath(__DIR__ . '/../../../../../data/') . '/' . uniqid() . ".data";
 
             file_put_contents($newPath, $this->readFile($this->pathToFile));
 
-            $this->descriptor = $newPath;
+            $this->descriptor = $this->readFile($newPath);
+            $this->pathToFile = $newPath;
         } else {
             $this->descriptor = $this->readFile($this->pathToFile);
         }
@@ -35,6 +35,13 @@ class DescriptorGetter
         $this->makeChecks();
 
         return $this->descriptor;
+    }
+
+    public function closeDescriptor()
+    {
+        fclose($this->descriptor);
+        unlink($this->pathToFile);
+
     }
 
     protected function readFile($path)
@@ -49,12 +56,12 @@ class DescriptorGetter
         }
 
         $mimeType = mime_content_type($this->pathToFile);
-
-        if ($mimeType !== $this->config['allowed_mime_types']) {
-            throw new MimeTypeException($mimeType . ' is not allowe mime type');
+        if(!in_array($mimeType, $this->config['allowed_mime_types'])){
+            throw new MimeTypeException($mimeType . ' is not allowed mime type, allowe only types: ' . implode(', ', $this->config['allowed_mime_types']));
         }
 
-        $size = floor(filesize($this->pathToFile) / 1000000);
+
+        $size = filesize($this->pathToFile) / 1048576 ;
         if ($size > $this->config['max_size_mb']) {
             throw new MaxSizeException("The file is too large. Max file size is {$this->config['max_size_mb']}MB, but your file is {$size}MB");
         }

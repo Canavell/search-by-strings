@@ -45,6 +45,7 @@ class Builder
             $this->putResultIntoCollection($result);
         }
 
+        $this->descriptorGetter->closeDescriptor();
         return $this->collection;
     }
 
