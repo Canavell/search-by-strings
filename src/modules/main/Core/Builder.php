@@ -27,15 +27,18 @@ class Builder
     public function __construct(ISearch $searchEngine, string $pathToFile, array $config)
     {
         $this->searchEngine = $searchEngine;
-        $this->descriptorGetter = new DescriptorGetter($pathToFile, $config);
         $this->stringIterator = new StringIterator();
+        $this->descriptorGetter = new DescriptorGetter($pathToFile, $config);
+
         $this->collection = new Collection();
 
     }
 
     public function process(): Collection
     {
+        // set descriptor
         $this->stringIterator->setDescriptor($this->descriptorGetter->getDescriptor());
+
         // initialize string iterator
         while ($string = $this->stringIterator->nextString()) {
             $result = $this->searchEngine->search($string, $this->stringIterator->getLine(), $this->searchEngine->getSearchString());
