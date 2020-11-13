@@ -3,7 +3,7 @@
 
 namespace Main\Search\Entity;
 
-class Result
+class Result extends AbstractResult
 {
     protected $line = false;
     protected $position = false;

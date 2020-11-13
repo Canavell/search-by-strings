@@ -2,6 +2,6 @@
 return [
     'max_size_mb' => 5,
     'allowed_mime_types' => [
-        'txt',
+        'text/plain'
     ]
 ];

@@ -1,7 +1,8 @@
 <?php
 
+namespace Main\Exception;
 
-class CollectionTypeViolation extends OutOfRangeException
+class CollectionTypeViolation extends \OutOfRangeException
 {
 
 }

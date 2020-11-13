@@ -2,9 +2,10 @@
 
 namespace Main\Core;
 
+use Main\File\Model\DescriptorGetter;
 use Main\File\Model\StringIterator;
+use Main\Search\Entity\AbstractResult;
 use Main\Search\Entity\Collection;
-use Main\Search\Entity\Result;
 use Main\Search\Model\ISearch;
 
 class Builder
@@ -21,18 +22,21 @@ class Builder
 
     protected $collection;
 
-    public function __construct(ISearch $searchEngine, string $pathToFile)
+    protected $descriptorGetter;
+
+    public function __construct(ISearch $searchEngine, string $pathToFile, array $config)
     {
         $this->searchEngine = $searchEngine;
-        $this->stringIterator = new StringIterator($pathToFile);
+        $this->descriptorGetter = new DescriptorGetter($pathToFile, $config);
+        $this->stringIterator = new StringIterator();
         $this->collection = new Collection();
+
     }
 
     public function process(): Collection
     {
+        $this->stringIterator->setDescriptor($this->descriptorGetter->getDescriptor());
         // initialize string iterator
-        $this->stringIterator->init();
-        $line = 0;
         while ($string = $this->stringIterator->nextString()) {
             $result = $this->searchEngine->search($string, $this->stringIterator->getLine(), $this->searchEngine->getSearchString());
             $this->putResultIntoCollection($result);
@@ -41,11 +45,10 @@ class Builder
         return $this->collection;
     }
 
-    protected function putResultIntoCollection(Result $result)
+    protected function putResultIntoCollection(AbstractResult $result)
     {
-        if($result->getLine() !== false && $result->getPosition() !== false){
+        if($result->getStatus() !== false){
             $this->collection[] = $result;
         }
     }
-
 }

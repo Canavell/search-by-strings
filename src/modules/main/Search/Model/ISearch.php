@@ -3,12 +3,11 @@
 
 namespace Main\Search\Model;
 
-
-use Main\Search\Entity\Result;
+use Main\Search\Entity\AbstractResult;
 
 interface ISearch
 {
-    public function search(string $string, int $line, string $searchValue): Result;
+    public function search(string $string, int $line, string $searchValue): AbstractResult;
 
     public function setSearchString(string $string);
 
