@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 
 // initialize search engine
 $searchEngine = new \Main\Search\Model\FindSubstring();
-$searchEngine->setSearchString('and');
+$searchEngine->setSearchString('And');
 
 // config
 $config = include 'src/config/main.php';
@@ -12,6 +12,7 @@ $config = include 'src/config/main.php';
 $filePath = 'http://stackoverflow.com/';
 $builder = new \Main\Core\Builder($searchEngine, $filePath, $config);
 $collectionResult = $builder->process();
+var_dump($collectionResult);
 
 // creating file stub
 $string = "
@@ -24,7 +25,8 @@ Shall make thee let the cup fall from thy hand,
 And stand as mute and pale as death itself.
 ";
 // search in file
-$testPath = realpath(__DIR__ . '/data/sample.data');
+$testPath = 'data/sample.data';
 file_put_contents($testPath, $string);
 $builder = new \Main\Core\Builder($searchEngine, $testPath, $config);
 $collectionResult = $builder->process();
+var_dump($collectionResult);
