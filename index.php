@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 
 // initialize search engine
 $searchEngine = new \Main\Search\Model\FindSubstring();
-$searchEngine->setSearchString('And');
+$searchEngine->setSearchString('all');
 
 // config
 $config = include 'src/config/main.php';
