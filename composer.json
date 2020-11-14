@@ -7,11 +7,15 @@
         }
     ],
     "require": {
-      "ext-fileinfo": "*"
+        "ext-fileinfo": "*"
     },
     "autoload": {
         "psr-4": {
             "Main\\": "src/modules/main"
         }
+    },
+    "require-dev": {
+        "codeception/codeception": "^4.1",
+        "codeception/module-asserts": "^1.0.0"
     }
 }
