@@ -5,8 +5,16 @@ namespace Main\Search\Entity;
 
 use Main\Exception\CollectionTypeViolation;
 
+/**
+ * Class Collection
+ * @package Main\Search\Entity
+ */
 class Collection extends \ArrayObject
 {
+    /**
+     * @param mixed $index
+     * @param mixed $newval
+     */
     public function offsetSet($index, $newval)
     {
         if (!$newval instanceof BaseResult) {

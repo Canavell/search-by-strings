@@ -1,4 +1,5 @@
 # Installation
+* Clone this repository
 * Go to project's root directory
 * Run
     * `composer install`

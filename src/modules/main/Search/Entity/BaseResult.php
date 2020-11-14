@@ -4,6 +4,10 @@
 namespace Main\Search\Entity;
 
 
+/**
+ * Class BaseResult
+ * @package Main\Search\Entity
+ */
 class BaseResult
 {
     protected $line = false;

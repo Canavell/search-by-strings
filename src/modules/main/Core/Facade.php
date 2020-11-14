@@ -8,6 +8,10 @@ use Main\Search\Entity\BaseResult;
 use Main\Search\Entity\Collection;
 use Main\Search\Model\ISearch;
 
+/**
+ * Class Facade
+ * @package Main\Core
+ */
 class Facade
 {
     /**
@@ -20,10 +24,22 @@ class Facade
      */
     protected $stringIterator;
 
+    /**
+     * @var Collection
+     */
     protected $resultCollection;
 
+    /**
+     * @var DescriptorGetter
+     */
     protected $descriptorGetter;
 
+    /**
+     * Facade constructor.
+     * @param ISearch $searchEngine
+     * @param string $pathToFile
+     * @param array $config
+     */
     public function __construct(ISearch $searchEngine, string $pathToFile, array $config)
     {
         $this->searchEngine = $searchEngine;
@@ -33,6 +49,9 @@ class Facade
 
     }
 
+    /**
+     * @return Collection
+     */
     public function process(): Collection
     {
         // set descriptor
@@ -58,6 +77,9 @@ class Facade
         return $this->resultCollection;
     }
 
+    /**
+     * @param BaseResult $result
+     */
     protected function putResultIntoCollection(BaseResult $result)
     {
         // if line exists (something was found) then we will add result into collection
