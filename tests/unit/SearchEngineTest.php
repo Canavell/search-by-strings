@@ -6,10 +6,12 @@ class SearchEngineTest extends \Codeception\Test\Unit
      */
     protected $tester;
     protected $config = false;
+    protected $notFindString = '';
 
     protected function _before()
     {
         $this->config = include realpath(__DIR__ . '/../../') . '/src/config/main.php';
+        $this->notFindString = uniqid() . uniqid() . "не находись никогда!";
     }
 
     protected function _after()
@@ -38,7 +40,7 @@ class SearchEngineTest extends \Codeception\Test\Unit
 
         // initialize search engine
         $searchEngine = new \Main\Search\Model\FindSubstring();
-        $searchEngine->setSearchString('не находись!');
+        $searchEngine->setSearchString($this->notFindString);
 
         $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
         $collectionResult = $facade->process();
@@ -69,11 +71,45 @@ class SearchEngineTest extends \Codeception\Test\Unit
 
         // initialize search engine
         $searchEngine = new \Main\Search\Model\SearchByHash();
-        $searchEngine->setSearchString("не находись!");
+        $searchEngine->setSearchString($this->notFindString);
         $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
         $collectionResult = $facade->process();
 
         $this->assertEquals(0, count($collectionResult));
+    }
+
+
+
+    // tests
+    public function testSuccessfulSearchInURLBySubstringPath()
+    {
+        $testPath = $this->getTestURL();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\FindSubstring();
+        $searchEngine->setSearchString("DOCTYPE");
+        $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+        $collectionResult = $facade->process();
+
+        $this->assertEquals(1, count($collectionResult));
+    }
+
+    public function testNotSuccessfulSearchInURLBySubstringPath()
+    {
+        $testPath = $this->getTestURL();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\FindSubstring();
+        $searchEngine->setSearchString($this->notFindString);
+        $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+        $collectionResult = $facade->process();
+
+        $this->assertEquals(0, count($collectionResult));
+    }
+
+    protected function getTestURL()
+    {
+        return 'http://stackoverflow.com/';
     }
 
     protected function createStubFilePath()
