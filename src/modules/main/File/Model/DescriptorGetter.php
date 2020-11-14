@@ -10,10 +10,10 @@ use Main\Exception\MimeTypeException;
 class DescriptorGetter
 {
     protected $pathToFile;
-    protected $config;
+    protected $config = [];
     protected $descriptor = false;
 
-    public function __construct(string $pathToFile, array $config)
+    public function __construct(string $pathToFile, array $config = [])
     {
         $this->pathToFile = $pathToFile;
         $this->config = $config;
@@ -32,7 +32,9 @@ class DescriptorGetter
             $this->descriptor = $this->readFile($this->pathToFile);
         }
 
-        $this->makeChecks();
+        if(count($this->config)){
+            $this->makeChecks();
+        }
 
         return $this->descriptor;
     }

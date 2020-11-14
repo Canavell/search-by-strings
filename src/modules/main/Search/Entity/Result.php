@@ -3,21 +3,10 @@
 
 namespace Main\Search\Entity;
 
-class Result extends AbstractResult
+class Result extends BaseResult
 {
-    protected $line = false;
+
     protected $position = false;
-
-    public function getLine()
-    {
-        return $this->line;
-    }
-
-    public function setLine($line): Result
-    {
-        $this->line = $line;
-        return $this;
-    }
 
     public function getPosition()
     {
@@ -29,7 +18,4 @@ class Result extends AbstractResult
         $this->position = $position;
         return $this;
     }
-
-
-
 }

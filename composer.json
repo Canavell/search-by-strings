@@ -6,7 +6,9 @@
             "email": "evglevsckij.stanislav@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+      "ext-fileinfo": "*"
+    },
     "autoload": {
         "psr-4": {
             "Main\\": "src/modules/main"
