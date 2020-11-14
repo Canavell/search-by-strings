@@ -119,7 +119,7 @@ class SearchEngineTest extends \Codeception\Test\Unit
             $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
             $facade->process();
         } catch (\Main\Exception\MimeTypeException $e) {
-            $this->assertInstanceOf(\Main\Exception\MimeTypeException::class, $e);
+            $this->assertInstanceOf(\Main\Exception\ISearchEngineExceptions::class, $e);
         }
     }
 
@@ -135,6 +135,21 @@ class SearchEngineTest extends \Codeception\Test\Unit
 
 
         $this->assertEquals(0, count($collectionResult));
+    }
+
+    public function testFileNotFoundError()
+    {
+        $testPath = 'there-is-no-file';
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\FindSubstring();
+        $searchEngine->setSearchString($this->notFindString);
+        try {
+            $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+            $facade->process();
+        } catch (\Main\Exception\FileNotFound $e) {
+            $this->assertInstanceOf(\Main\Exception\ISearchEngineExceptions::class, $e);
+        }
     }
 
     protected function getTestURLProducesPNG()

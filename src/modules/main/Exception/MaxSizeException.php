@@ -4,7 +4,7 @@
 namespace Main\Exception;
 
 
-class MaxSizeException extends \OutOfRangeException
+class MaxSizeException extends \OutOfRangeException implements ISearchEngineExceptions
 {
 
 }

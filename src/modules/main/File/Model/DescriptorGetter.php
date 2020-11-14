@@ -6,6 +6,7 @@ namespace Main\File\Model;
 
 use Main\Exception\MaxSizeException;
 use Main\Exception\MimeTypeException;
+use Main\Exception\FileNotFound;
 
 /**
  * Class DescriptorGetter
@@ -37,8 +38,10 @@ class DescriptorGetter
         $this->config = $config;
     }
 
+
     /**
      * @return bool|resource
+     * @throws FileNotFound
      */
     public function getDescriptor()
     {
@@ -70,22 +73,29 @@ class DescriptorGetter
 
     }
 
+
     /**
      * @param $path
      * @return false|resource
+     * @throws FileNotFound
      */
     protected function readFile($path)
     {
-        return fopen($path, 'r');
+        try {
+            return fopen($path, 'r');
+        } catch (\Exception $e) {
+            throw new FileNotFound($e->getMessage());
+        }
     }
 
     /**
      * @return bool
+     * @throws FileNotFound
      */
     protected function makeChecks()
     {
         if ($this->descriptor === false) {
-            return false;
+            throw new FileNotFound();
         }
 
         $mimeType = mime_content_type($this->pathToFile);
