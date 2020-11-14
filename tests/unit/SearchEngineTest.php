@@ -46,6 +46,36 @@ class SearchEngineTest extends \Codeception\Test\Unit
         $this->assertEquals(0, count($collectionResult));
     }
 
+
+    // tests
+    public function testSuccessfulSearchInFileByHashPath()
+    {
+        $testPath = $this->createStubFilePath();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\SearchByHash();
+        $searchEngine->setSearchString("When thou art at thy table with thy friends,
+");
+        $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+        $collectionResult = $facade->process();
+
+        $this->assertEquals(1, count($collectionResult));
+    }
+
+    // tests
+    public function testNotSuccessfulSearchInFileByHashPath()
+    {
+        $testPath = $this->createStubFilePath();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\SearchByHash();
+        $searchEngine->setSearchString("не находись!");
+        $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+        $collectionResult = $facade->process();
+
+        $this->assertEquals(0, count($collectionResult));
+    }
+
     protected function createStubFilePath()
     {
         // creating file stub
