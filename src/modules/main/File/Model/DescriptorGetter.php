@@ -24,7 +24,7 @@ class DescriptorGetter
         if (filter_var($this->pathToFile, FILTER_VALIDATE_URL)) {
             $newPath = realpath(__DIR__ . '/../../../../../data/') . '/' . uniqid() . ".data";
 
-            file_put_contents($newPath, $this->readFile($this->pathToFile));
+            file_put_contents($newPath, file_get_contents($this->pathToFile));
 
             $this->descriptor = $this->readFile($newPath);
             $this->pathToFile = $newPath;

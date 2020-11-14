@@ -83,7 +83,7 @@ class SearchEngineTest extends \Codeception\Test\Unit
     // tests
     public function testSuccessfulSearchInURLBySubstringPath()
     {
-        $testPath = $this->getTestURL();
+        $testPath = $this->getTestURLProducesHTML();
 
         // initialize search engine
         $searchEngine = new \Main\Search\Model\FindSubstring();
@@ -96,7 +96,7 @@ class SearchEngineTest extends \Codeception\Test\Unit
 
     public function testNotSuccessfulSearchInURLBySubstringPath()
     {
-        $testPath = $this->getTestURL();
+        $testPath = $this->getTestURLProducesHTML();
 
         // initialize search engine
         $searchEngine = new \Main\Search\Model\FindSubstring();
@@ -107,7 +107,42 @@ class SearchEngineTest extends \Codeception\Test\Unit
         $this->assertEquals(0, count($collectionResult));
     }
 
-    protected function getTestURL()
+
+    public function testMimeTypeError()
+    {
+        $testPath = $this->getTestURLProducesPNG();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\FindSubstring();
+        $searchEngine->setSearchString($this->notFindString);
+        try {
+            $facade = new \Main\Core\Facade($searchEngine, $testPath, $this->config);
+            $facade->process();
+        } catch (\Main\Exception\MimeTypeException $e) {
+            $this->assertInstanceOf(\Main\Exception\MimeTypeException::class, $e);
+        }
+    }
+
+    public function testMimeTypeWithoutConfig()
+    {
+        $testPath = $this->getTestURLProducesPNG();
+
+        // initialize search engine
+        $searchEngine = new \Main\Search\Model\FindSubstring();
+        $searchEngine->setSearchString($this->notFindString);
+        $facade = new \Main\Core\Facade($searchEngine, $testPath, []);
+        $collectionResult = $facade->process();
+
+
+        $this->assertEquals(0, count($collectionResult));
+    }
+
+    protected function getTestURLProducesPNG()
+    {
+        return 'https://contribute.geeksforgeeks.org/wp-content/uploads/gfg-40.png';
+    }
+
+    protected function getTestURLProducesHTML()
     {
         return 'http://stackoverflow.com/';
     }
